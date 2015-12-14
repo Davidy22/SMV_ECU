@@ -68,6 +68,8 @@ int RPMSample[sampleSize];
 long avg_RPM = 0;
 int numSamples = 0;
 
+unsigned long output;
+
 void toggleOutput(const int Pin, int& Delay, int OnDelay, int OffDelay, 
                   boolean& on, int& LastSampled) {
      // Toggles a pin every increment of time denoted by OffDelay and OnDelay
@@ -253,45 +255,47 @@ if (millis() - lastTime > 450) {
   }
   
   // Begin debug code
-  lcd.setCursor(0, 0);
-  lcd.print("VAL ");
-  lcd.print(INJ_OnDelay);
-  lcd.print(" ");
-  lcd.print(INJ_OffDelay);
-  lcd.print("     ");
-
-  lcd.setCursor(0, 1);
-  lcd.print("PIN ");
-  lcd.print(Des_RPM); //used to be ECT_Val
-  lcd.print("      ");
-  lcd.setCursor(10, 1);
-  lcd.print(avg_RPM);
-  lcd.print("      ");
-  
-  // Serial output
-  Serial.print("#S|TEXT|[ECT: ");
-  Serial.print(getTemp(ECT_Pin));
-  Serial.print(" IAT: ");
-  Serial.print(getTemp(IAT_Pin));
-  Serial.print(" MAP: ");
-  Serial.print(analogRead(MAP_Pin)*voltageConversion);
-  Serial.print(" HES: ");
-  Serial.print(analogRead(HES_Pin)*voltageConversion);
-  Serial.print(" TPS: ");
-  Serial.print(getThrottlePosition());
-  Serial.println("]#");
-
-  
-  Serial.print("#S|EXCEL|[");
-  Serial.print(getTemp(ECT_Pin));
-  Serial.print(",");
-  Serial.print(getTemp(IAT_Pin));
-  Serial.print(",");
-  Serial.print(analogRead(MAP_Pin)*voltageConversion);
-  Serial.print(",");
-  Serial.print(analogRead(HES_Pin)*voltageConversion);
-  Serial.print(",");
-  Serial.print(getThrottlePosition());
-  Serial.println("]#");
+  if (millis()-lastTime>=500) {
+    lcd.setCursor(0, 0);
+    lcd.print("VAL ");
+    lcd.print(INJ_OnDelay);
+    lcd.print(" ");
+    lcd.print(INJ_OffDelay);
+    lcd.print("     ");
+    
+    lcd.setCursor(0, 1);
+    lcd.print("PIN ");
+    lcd.print(Des_RPM); //used to be ECT_Val
+    lcd.print("      ");
+    lcd.setCursor(10, 1);
+    lcd.print(avg_RPM);
+    lcd.print("      ");
+    
+    // Serial output
+    Serial.print("#S|TEXT|[ECT: ");
+    Serial.print(getTemp(ECT_Pin));
+    Serial.print(" IAT: ");
+    Serial.print(getTemp(IAT_Pin));
+    Serial.print(" MAP: ");
+    Serial.print(analogRead(MAP_Pin)*voltageConversion);
+    Serial.print(" HES: ");
+    Serial.print(analogRead(HES_Pin)*voltageConversion);
+    Serial.print(" TPS: ");
+    Serial.print(getThrottlePosition());
+    Serial.println("]#");
+    
+    Serial.print("#S|EXCEL|[");
+    Serial.print(getTemp(ECT_Pin));
+    Serial.print(",");
+    Serial.print(getTemp(IAT_Pin));
+    Serial.print(",");
+    Serial.print(analogRead(MAP_Pin)*voltageConversion);
+    Serial.print(",");
+    Serial.print(analogRead(HES_Pin)*voltageConversion);
+    Serial.print(",");
+    Serial.print(getThrottlePosition());
+    Serial.println("]#");
+    lastTime = millis();
+  }
   // End debug code
 }
