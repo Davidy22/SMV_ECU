@@ -63,12 +63,11 @@ int der = 1;
 double error = 0; // Changed these to change the frequency that these are cycled.
 //*******************************************************************//
 
+// Average RPM variables
 const int sampleSize = 50;
 int RPMSample[sampleSize];
 long avg_RPM = 0;
 int numSamples = 0;
-
-unsigned long output;
 
 void toggleOutput(const int Pin, int& Delay, int OnDelay, int OffDelay, 
                   boolean& on, int& LastSampled) {
@@ -173,19 +172,19 @@ void setup () {
 }
 
 void loop () {
-//  digitalWrite(PMP_Pin, HIGH);
-if (millis() - lastTime > 450) {
+  // Set RPM to 0 if flywheel is too slow
+  if (millis() - lastTime > 450) {
     RPM = 0;
   }
   
   // RPM averaging code
-  if (RPM > 1000 && numSamples < sampleSize){
-    RPMSample[numSamples] = RPM;
-    numSamples++;
-  }
-  
+//  if (RPM > 1000 && numSamples < sampleSize){
+//    RPMSample[numSamples] = RPM;
+//    numSamples++;
+//  }  
 //  if( numSamples == sampleSize - 1)
 //  {
+//    avg_RPM = 0;
 //    for(int i = 0; i < sampleSize ; i++){
 //      avg_RPM += RPMSample[i];
 //    }
@@ -210,8 +209,6 @@ if (millis() - lastTime > 450) {
     digitalWrite(PMP_Pin, LOW);
     lcd.write("OFF");
   }
-  
-  // End engine RPM calculations
 
   TPS_Val = getThrottlePosition()*1024;
   INJ_OffDelay = INJ_MaxOffDelay - (TPS_Val - 190)/2;
@@ -221,7 +218,7 @@ if (millis() - lastTime > 450) {
      Des_RPM = 12000;
   }else if(Des_RPM <= 5000){
      Des_RPM = 5000; 
-  }  
+  }
   
   //INJ_OffDelay += (avg_RPM - Des_RPM)*k_p;
   
@@ -255,47 +252,45 @@ if (millis() - lastTime > 450) {
   }
   
   // Begin debug code
-  if (millis()-lastTime>=500) {
-    lcd.setCursor(0, 0);
-    lcd.print("VAL ");
-    lcd.print(INJ_OnDelay);
-    lcd.print(" ");
-    lcd.print(INJ_OffDelay);
-    lcd.print("     ");
-    
-    lcd.setCursor(0, 1);
-    lcd.print("PIN ");
-    lcd.print(Des_RPM); //used to be ECT_Val
-    lcd.print("      ");
-    lcd.setCursor(10, 1);
-    lcd.print(avg_RPM);
-    lcd.print("      ");
-    
-    // Serial output
-    Serial.print("#S|TEXT|[ECT: ");
-    Serial.print(getTemp(ECT_Pin));
-    Serial.print(" IAT: ");
-    Serial.print(getTemp(IAT_Pin));
-    Serial.print(" MAP: ");
-    Serial.print(analogRead(MAP_Pin)*voltageConversion);
-    Serial.print(" HES: ");
-    Serial.print(analogRead(HES_Pin)*voltageConversion);
-    Serial.print(" TPS: ");
-    Serial.print(getThrottlePosition());
-    Serial.println("]#");
-    
-    Serial.print("#S|EXCEL|[");
-    Serial.print(getTemp(ECT_Pin));
-    Serial.print(",");
-    Serial.print(getTemp(IAT_Pin));
-    Serial.print(",");
-    Serial.print(analogRead(MAP_Pin)*voltageConversion);
-    Serial.print(",");
-    Serial.print(analogRead(HES_Pin)*voltageConversion);
-    Serial.print(",");
-    Serial.print(getThrottlePosition());
-    Serial.println("]#");
-    lastTime = millis();
-  }
+  lcd.setCursor(0, 0);
+  lcd.print("VAL ");
+  lcd.print(INJ_OnDelay);
+  lcd.print(" ");
+  lcd.print(INJ_OffDelay);
+  lcd.print("     ");
+
+  lcd.setCursor(0, 1);
+  lcd.print("PIN ");
+  lcd.print(Des_RPM); //used to be ECT_Val
+  lcd.print("      ");
+  lcd.setCursor(10, 1);
+  lcd.print(avg_RPM);
+  lcd.print("      ");
+  
+  // Serial output
+  Serial.print("#S|TEXT|[ECT: ");
+  Serial.print(getTemp(ECT_Pin));
+  Serial.print(" IAT: ");
+  Serial.print(getTemp(IAT_Pin));
+  Serial.print(" MAP: ");
+  Serial.print(analogRead(MAP_Pin)*voltageConversion);
+  Serial.print(" HES: ");
+  Serial.print(analogRead(HES_Pin)*voltageConversion);
+  Serial.print(" TPS: ");
+  Serial.print(getThrottlePosition());
+  Serial.println("]#");
+
+  
+  Serial.print("#S|EXCEL|[");
+  Serial.print(getTemp(ECT_Pin));
+  Serial.print(",");
+  Serial.print(getTemp(IAT_Pin));
+  Serial.print(",");
+  Serial.print(analogRead(MAP_Pin)*voltageConversion);
+  Serial.print(",");
+  Serial.print(analogRead(HES_Pin)*voltageConversion);
+  Serial.print(",");
+  Serial.print(getThrottlePosition());
+  Serial.println("]#");
   // End debug code
 }
