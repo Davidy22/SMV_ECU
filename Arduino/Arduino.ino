@@ -97,15 +97,6 @@ double getTemp(int Pin) {
   return analogRead(Pin)*voltageConversion*(-19.451)+89.135;
 }
 
-//void buttonUp() {
-//  INJ_OnDelay++;
-//}
-
-//void buttonDown() {
-//  INJ_OnDelay--;
-//}
-
-
 void setup () {
   lcd.begin(16, 2);    // Initialization.
   lcd.setCursor(0,0);
@@ -158,7 +149,7 @@ void setup () {
     RPMSample[i] = 0;
   }
   
-//  pinMode(fuelPumpPin, OUTPUT);   //Pre-pressurise the fuel
+//  pinMode(fuelPumpPin, OUTPUT);   //Pre-pressurise the fuel, uncomment this when cold-starting the engine.
   pinMode(INJ_Pin, OUTPUT);
   digitalWrite(INJ_Pin, LOW);
   pinMode(PMP_Pin, OUTPUT);
