@@ -15,50 +15,32 @@ void Parameters::calcSensors() {
 
 double Parameters::calcMAP() {
   double map = (18.8636364*analogRead(MAP_Pin)*voltageConversion + 20)*1000;
-  if (map >= MAP_MAX) {
-    Serial.println("Bad value on MAP");
-    return -1;
+  if (map >= MAP_MAX || map <= 0) {
+    //Serial.println("Bad value on MAP");
+    return MAP;
+    restart();
   }
   MAP = map;
   return map; //Output in Pa
 }
 
 double Parameters::calcO2() {
-  O2 = analogRead(OIN_Pin)*voltageConversion;
-  return O2;
+  double O2V = analogRead(OIN_Pin)*voltageConversion;
+  if (O2V < 0) {
+    //Serial.println("Bad O2 value");
+    return O2;
+    restart();
+  }
+  O2 = O2V;
+  return O2V;
 }
-
-/*double Parameters::calcTemp(int pin) {
-  double temp = (analogRead(pin)*voltageConversion*(slope)+intercept) + 273;
-  if (temp <= TEMP_MIN) {
-    Serial.print("Bad value on ");
-    if (pin == ECT_Pin) {
-      Serial.print("ECT");
-    }
-    else if (pin == IAT_Pin) {
-      Serial.print("IAT");
-    }
-    else {
-      Serial.print("Pin input");
-    }
-    Serial.print("\n");
-    return -1;
-  }
-  if (pin == ECT_Pin) {
-    ECT = temp;
-  }
-  else if (pin == IAT_Pin) {
-    IAT = temp;
-  }
-  return temp;
-}*/
 
 double Parameters::calcECT() {
   double temp = (analogRead(ECT_Pin)*voltageConversion*(slope)+intercept) + 273;
   if (temp <= TEMP_MIN) {
-    Serial.println("ECT Too Low");
-    //TODO: Initiate Restart Procedure
-    return -1;
+    //Serial.println("ECT Too Low");
+    return ECT;
+    restart();
   }
   ECT = temp;
   return temp;
@@ -67,9 +49,9 @@ double Parameters::calcECT() {
 double Parameters::calcIAT() {
   double temp = (analogRead(IAT_Pin)*voltageConversion*(slope)+intercept) + 273;
   if (temp <= TEMP_MIN) {
-    Serial.println("IAT Too Low");
-    //TODO: Initiate Restart Procedure
-    return -1;
+    //Serial.println("IAT Too Low");
+    return IAT;
+    restart();
   }
   IAT = temp;
   return temp;
@@ -78,8 +60,9 @@ double Parameters::calcIAT() {
 double Parameters::calcTPS() { //gets throttle position based off of the percentage of throttle area open
   double angle = sin((throttlePositionConversion * (analogRead(TPS_Pin)*voltageConversion -.84)));
   if (angle < 0) {
-    Serial.println("Bad value on TPS");
-    return -1;
+    //Serial.println("Bad value on TPS");
+    return TPS;
+    restart();
   }
   TPS = angle;
   return angle;
@@ -121,7 +104,12 @@ void Parameters::setActualTimePulsed(long time) {
 }
 
 void Parameters::addPulseTimeToRPMRange(int RPM) {
-  totalPulseTimeInRPMRange[RPM / RPMIncrements] += actualTimePulsed;
+  int index = RPM / RPM_INCREMENTS;
+  if (index > TABLE_SIZE - 1)
+  {
+    index = TABLE_SIZE - 1;
+  }
+  totalPulseTimeInRPMRange[index] += actualTimePulsed;
 }
 
 void Parameters::setPulseTimeAtRPMIndex(int index, int time) {
@@ -190,11 +178,29 @@ void Parameters::setSerialOutputted() {
   lastSerialOutputTime = millis();
 }
 
+void Parameters::setDesiredRPM(int rpm) {
+  desiredRPM = rpm;
+}
+
+void Parameters::setDesiredO2(double O2V) {
+  desiredO2 = O2V;
+}
+
+void Parameters::setFuelTableValue(int index, double value) {
+  fuelRatioTable[index] = value;
+}
+
 //Getters
 double Parameters::getFuelRatioForRPM(int RPM) {
-  int index = RPM / RPMIncrements;
+  int index = RPM / RPM_INCREMENTS;
   if (index > RPMRangeTableSize) {
     index = RPMRangeTableSize - 1;
   }
   return fuelRatioTable[index];
+}
+
+void restart () {
+  return //used temporarily for testing
+  detachInterrupt(2);
+  asm volatile (" jmp 0");
 }

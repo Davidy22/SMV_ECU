@@ -37,31 +37,12 @@ class Parameters;
 class Controller
 {
 public:
-    Controller() {}
 
     void setParameters(Parameters* p) {params = p;}
 
     bool getCommand();
-    // Read input from the serial port. If input is obtained, return true. Otherwise, return false.
 
-    bool executeCommand();
-    // Tell the controller to execute the command at the front of the command queue.
-    // We will take index 0 as the front of the command queue (Assuming an array structure).
-    // *If it is successfully executed, return true and eliminate that command from the queue.
-    // *Otherwise, return false and put the failed command at the back of the queue.
-    // **REMEMBER**: our system needs to be robust. Even if a command fails the system needs to
-    // keep chugging on.
-
-// Feel free to change up the private members as needed in order to maximize efficiency.
-// Some possible ones are listed here in order to make the desired functionality clear.
 private:
-    //.....................
-    bool set_idleVal();
-    bool set_fuelRatio();
-    //.....................etc...
-
-    //Queue<CommandType> queue;
-
     Parameters* params;
 };
 
