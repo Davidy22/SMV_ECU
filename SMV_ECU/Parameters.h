@@ -62,6 +62,9 @@ public:
   void setRPMCalculated(); //Resets revs since calculation to 0
   void setIdle();
   void setSerialOutputted();
+  void setDesiredRPM(int rpm);
+  void setDesiredO2(double O2V);
+  void setFuelTableValue(int index, double value);
 
 private:
 

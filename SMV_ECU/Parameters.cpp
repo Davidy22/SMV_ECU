@@ -178,6 +178,18 @@ void Parameters::setSerialOutputted() {
   lastSerialOutputTime = millis();
 }
 
+void Parameters::setDesiredRPM(int rpm) {
+  desiredRPM = rpm;
+}
+
+void Parameters::setDesiredO2(double O2V) {
+  desiredO2 = O2V;
+}
+
+void Parameters::setFuelTableValue(int index, double value) {
+  fuelRatioTable[index] = value;
+}
+
 //Getters
 double Parameters::getFuelRatioForRPM(int RPM) {
   int index = RPM / RPM_INCREMENTS;

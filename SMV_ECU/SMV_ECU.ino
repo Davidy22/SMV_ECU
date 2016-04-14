@@ -5,7 +5,7 @@
 #include "math.h"
 
 Parameters p = Parameters(RPM_INCREMENTS);
-//Controller c;
+Controller c;
 
 void serialOutput();
 
@@ -76,7 +76,7 @@ void setup() {
   pinMode(INJ_Pin, OUTPUT);
   Serial.begin(9600);
   Serial.println("Time, ECT,    IAT,    MAP,     TPS,  OIN,  RPM,  DesPW,PWRe,Revs,IV,TPW");
-  //c.setParameters(&p);
+  c.setParameters(&p);
   p.calcTPS();
   attachInterrupt(2, countRevolution, FALLING);
   inject();
