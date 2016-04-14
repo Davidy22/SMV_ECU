@@ -95,7 +95,6 @@ private:
   double resetMultiplier = 1.2;        //resetVal
   double startupMultiplier = 2;        //startupVal
   double throttleMultiplier = 0;       //TPSx
-  //Multipliers adjust the fuel ratio based on certain conditions
 
   //Sensor Readings
   int RPM = 0;

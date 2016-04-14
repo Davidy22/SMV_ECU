@@ -17,6 +17,7 @@ double Parameters::calcMAP() {
   double map = (18.8636364*analogRead(MAP_Pin)*voltageConversion + 20)*1000;
   if (map >= MAP_MAX || map <= 0) {
     //Serial.println("Bad value on MAP");
+    return MAP;
     restart();
   }
   MAP = map;
@@ -27,6 +28,7 @@ double Parameters::calcO2() {
   double O2V = analogRead(OIN_Pin)*voltageConversion;
   if (O2V < 0) {
     //Serial.println("Bad O2 value");
+    return O2;
     restart();
   }
   O2 = O2V;
@@ -37,7 +39,7 @@ double Parameters::calcECT() {
   double temp = (analogRead(ECT_Pin)*voltageConversion*(slope)+intercept) + 273;
   if (temp <= TEMP_MIN) {
     //Serial.println("ECT Too Low");
-    //return ECT;
+    return ECT;
     restart();
   }
   ECT = temp;
@@ -48,7 +50,7 @@ double Parameters::calcIAT() {
   double temp = (analogRead(IAT_Pin)*voltageConversion*(slope)+intercept) + 273;
   if (temp <= TEMP_MIN) {
     //Serial.println("IAT Too Low");
-    //return IAT;
+    return IAT;
     restart();
   }
   IAT = temp;
@@ -59,7 +61,7 @@ double Parameters::calcTPS() { //gets throttle position based off of the percent
   double angle = sin((throttlePositionConversion * (analogRead(TPS_Pin)*voltageConversion -.84)));
   if (angle < 0) {
     //Serial.println("Bad value on TPS");
-    //return TPS;
+    return TPS;
     restart();
   }
   TPS = angle;
@@ -102,7 +104,7 @@ void Parameters::setActualTimePulsed(long time) {
 }
 
 void Parameters::addPulseTimeToRPMRange(int RPM) {
-  int index = RPM / RPM Increments;
+  int index = RPM / RPM_INCREMENTS;
   if (index > TABLE_SIZE - 1)
   {
     index = TABLE_SIZE - 1;
@@ -186,7 +188,7 @@ double Parameters::getFuelRatioForRPM(int RPM) {
 }
 
 void restart () {
-  return //used temporarily for testing since we haven't tested the restart routine
+  return //used temporarily for testing
   detachInterrupt(2);
-  asm Volatile (" jmp 0");
+  asm volatile (" jmp 0");
 }
