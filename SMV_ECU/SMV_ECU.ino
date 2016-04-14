@@ -92,6 +92,7 @@ void setup() {
 }
 
 void loop() {
+  c.getCommand();
   p.calcSensors();
   if (p.getRevsSinceLastCalculation() >= REVS_PER_RECALCULATION) {
     p.calcRPM();

@@ -28,6 +28,10 @@ bool Controller::getCommand() {
       double ratio = std::stod(value);
       params->setFuelTableValue(index, ratio);
     }
+    else {
+      return false;
+    }
+    return true;
   }
   return false;
 }
