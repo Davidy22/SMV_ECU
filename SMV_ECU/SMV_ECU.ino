@@ -4,7 +4,7 @@
 #include "TimerThree.h"
 #include "math.h"
 
-Parameters p = Parameters(RPMIncrements);
+Parameters p = Parameters(RPM_INCREMENTS);
 Controller c;
 
 void serialOutput();
@@ -93,14 +93,6 @@ void setup() {
 
 void loop() {
   p.calcSensors();
-  if (millis() == timeout) {
-    digitalWrite(INJ_Pin, LOW);
-    p.setIdleMultiplier(0);
-    detachInterrupt(2);
-    while(millis() - timeout < 10000) //Wait 10 seconds for some reason
-    {}
-  }
-
   if (p.getRevsSinceLastCalculation() >= REVS_PER_RECALCULATION) {
     p.calcRPM();
     p.setStartupMultiplier(1);

@@ -1,11 +1,9 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
-
 #include "Constants.h"
-
 class Parameters {
-
 public:
+
   Parameters(int increment) {
     RPMRangeTableSize = (RPM_MAX/increment) + 1;
     totalPulseTimeInRPMRange = new int[RPMRangeTableSize];
@@ -69,45 +67,45 @@ private:
 
   //Revolution Counters
   int revsSinceLastRPMCalculation = 0; //revolutions
-  unsigned long totalRevs = 0; //revolutions2
+  unsigned long totalRevs = 0;         //revolutions2
 
   //RPM Counters
-  long lastRPMReadTime = 0; //lastTimeRPM
+  long lastRPMReadTime = 0;            //lastTimeRPM
 
   //Time Counters
-  long lastSerialOutputTime = 0; //lastTime
-  long lastInjectorEnableTime = 0; //lastTime2
-  long actualTimePulsed = 0; //pulseTimeReal
-  long lastInterruptTime; //lastInterrupt
-  int delayBeforeInjection = 0; //delayCount
+  long lastSerialOutputTime = 0;       //lastTime
+  long lastInjectorEnableTime = 0;     //lastTime2
+  long actualTimePulsed = 0;           //pulseTimeReal
+  long lastInterruptTime;              //lastInterrupt
+  int delayBeforeInjection = 0;        //delayCount
 
   //Feedback Loop Control
   int desiredRPM = 3000;
   double desiredO2 = 0.5;
 
   //Pulse Width Counters
-  long theoreticalPulseTime; //pulseTime
-  int* totalPulseTimeInRPMRange; //totalPulse
-  int RPMRangeTableSize; //arraySize
-  unsigned long totalPulseTime = 0; //sumPulse
+  long theoreticalPulseTime;           //pulseTime
+  int* totalPulseTimeInRPMRange;       //totalPulse
+  int RPMRangeTableSize;               //arraySize
+  unsigned long totalPulseTime = 0;    //sumPulse
 
   //Pulse Adjustment Values
   double fuelRatio = 15.5;
-  double idleMultiplier = 1.2; //idleVal
-  double resetMultiplier = 1.2; //resetVal
-  double startupMultiplier = 2; //startupVal
-  double throttleMultiplier = 0; //TPSx
+  double idleMultiplier = 1.2;         //idleVal
+  double resetMultiplier = 1.2;        //resetVal
+  double startupMultiplier = 2;        //startupVal
+  double throttleMultiplier = 0;       //TPSx
+  //Multipliers adjust the fuel ratio based on certain conditions
 
   //Sensor Readings
   int RPM = 0;
-  double O2 = 0; //O2V
+  double O2 = 0;                       //O2V
   double MAP = 0;
   double ECT = 0;
   double IAT = 0;
-  double TPS = 0; //lastTPS
+  double TPS = 0;                      //lastTPS
 
   //RPM TABLE
-
   double fuelRatioTable [32] =
    //                  0000-0249 0250-0499 0500-0749 0750-0999
                     {    14.7  ,   14.7  ,   14.7  ,   14.7,  //0000 - 0999
@@ -119,5 +117,7 @@ private:
                          14.7  ,   14.7  ,   14.7  ,   14.7,  //6000 - 6999
                          14.7  ,   14.7  ,   14.7  ,   14.7 };//7000 - 7999
 };
+
+void restart();
 
 #endif

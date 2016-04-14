@@ -20,12 +20,13 @@ const int TEMP_MIN = 273;
 const double TPS_MIN = 0;
 const double TPS_MAX_START = 0.1;
 const double TPS_MAX_RUNNING = 1.0;
-const int MAP_MAX = 110000;
+const int MAP_MAX = 150000;
 const int RPM_MAX = 7999;
 const double IDLE_TPS_MAX = 0.10;
 
 const int timeout = 60000;
 
-const int RPMIncrements = 250;
+const int RPM_INCREMENTS = 250;
 const int REVS_PER_RECALCULATION = 30;
+const int TABLE_SIZE = 32;
 #endif

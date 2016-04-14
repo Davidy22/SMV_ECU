@@ -27,7 +27,7 @@
   ar19 ____
 */
 
-const int MAX_QUEUE_SIZE = 100;
+/*const int MAX_QUEUE_SIZE = 100;
 
 // CommandType can be changed if necessary
 typedef String CommandType;
@@ -63,6 +63,6 @@ private:
     //Queue<CommandType> queue;
 
     Parameters* params;
-};
+};*/
 
 #endif // CONTROLLER_H
