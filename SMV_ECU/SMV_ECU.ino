@@ -40,9 +40,10 @@ void inject() {
   // mult n by mm of air, divide by 14.7
   p.setThrottleMultiplier(1 + TPS_MOD * (abs(p.getTPS() - p.calcTPS())));
   if (p.getTotalRevs() > 2 && p.getTPS() <= IDLE_TPS_MAX) {
+    //TODO: Figure out why feedback loop is breaking and not engine shuts down
+    //TODO: Track callstack for bugs
     //RPM Based Inject Feedback Loop
-
-    int RPM = p.getRPM();
+    int RPM = p.getRPM();4
     int desiredRPM = p.getDesiredRPM();
     if (RPM > desiredRPM) {
       p.setIdleMultiplier(p.getIdleMultiplier() + .0001);
