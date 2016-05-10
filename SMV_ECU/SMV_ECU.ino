@@ -43,7 +43,7 @@ void inject() {
     //TODO: Figure out why feedback loop is breaking and not engine shuts down
     //TODO: Track callstack for bugs
     //RPM Based Inject Feedback Loop
-    int RPM = p.getRPM();4
+    int RPM = p.getRPM();
     int desiredRPM = p.getDesiredRPM();
     if (RPM > desiredRPM) {
       p.setIdleMultiplier(p.getIdleMultiplier() + .0001);

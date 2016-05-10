@@ -1,12 +1,13 @@
 #ifndef CONST_H
 #define CONST_H
 
-const int TPS_Pin = 3;
+const int TPS_Pin = 2;
 const int IAT_Pin = 14;
-const int ECT_Pin = 5;
-const int MAP_Pin = 11;
-const int OIN_Pin = 13;
-const int INJ_Pin = 32;
+const int ECT_Pin = 1;
+const int MAP_Pin = 15;
+const int OIN_Pin = 3;
+const int INJ_Pin = 50;
+const int PUMP_Pin = 0;
 
 const double TPS_MOD = 1;
 const double slope = -19.451;

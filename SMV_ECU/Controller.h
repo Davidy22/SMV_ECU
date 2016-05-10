@@ -30,7 +30,6 @@
 const int MAX_QUEUE_SIZE = 100;
 
 // CommandType can be changed if necessary
-typedef String CommandType;
 
 class Parameters;
 
