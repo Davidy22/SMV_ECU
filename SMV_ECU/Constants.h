@@ -7,7 +7,8 @@ const int ECT_Pin = 1;
 const int MAP_Pin = 15;
 const int OIN_Pin = 3;
 const int INJ_Pin = 50;
-const int PUMP_Pin = 0;
+const int PUMP_Pin = 13;
+//const int HEAT_Pin = 52;
 
 const double TPS_MOD = 1;
 const double slope = -19.451;

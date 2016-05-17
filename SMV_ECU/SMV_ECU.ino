@@ -107,7 +107,7 @@ void loop() {
   //Routine for when the engine is idling
   if (millis() - p.getLastRPMReadTime() >= 1000) {
     p.setIdle();
-    Serial.println(p.getTotalPulseTime());
+    //Serial.println(p.getTotalPulseTime());
   }
 
   if (millis() - p.getLastSerialOutputTime() >= 500) {
