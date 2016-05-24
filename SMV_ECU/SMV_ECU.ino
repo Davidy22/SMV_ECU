@@ -40,8 +40,9 @@ void inject() {
   // mult n by mm of air, divide by 14.7
   p.setThrottleMultiplier(1 + TPS_MOD * (abs(p.getTPS() - p.calcTPS())));
   if (p.getTotalRevs() > 2 && p.getTPS() <= IDLE_TPS_MAX) {
+    //TODO: Figure out why feedback loop is breaking and not engine shuts down
+    //TODO: Track callstack for bugs
     //RPM Based Inject Feedback Loop
-
     int RPM = p.getRPM();
     int desiredRPM = p.getDesiredRPM();
     if (RPM > desiredRPM) {
@@ -106,7 +107,7 @@ void loop() {
   //Routine for when the engine is idling
   if (millis() - p.getLastRPMReadTime() >= 1000) {
     p.setIdle();
-    Serial.println(p.getTotalPulseTime());
+    //Serial.println(p.getTotalPulseTime());
   }
 
   if (millis() - p.getLastSerialOutputTime() >= 500) {

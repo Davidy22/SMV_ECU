@@ -1,31 +1,33 @@
+#include "Arduino.h"
 #include "Controller.h"
 
-#include <string>
+#include "String.h"
+#include "Parameters.h"
 
 bool Controller::getCommand() {
   if (Serial.available() == 9) {
-    std::string command = Serial.readString();
-    std::string identifier = command.substr(0,5);
-    std::string value = command.substr(5);
+    String command = Serial.readString();
+    String identifier = command.substring(0,5);
+    String value = command.substring(5);
     if (identifier == "idle ") {
-      double multiplier = std::stod(value);
+      double multiplier = value.toFloat();
       params->setIdleMultiplier(multiplier);
     }
     else if (identifier == "fuel ") {
-      double fuelRatio = std::stod(value);
+      double fuelRatio = value.toFloat();
       params->setFuelRatio(fuelRatio);
     }
     else if (identifier == "dRPM ") {
-      int desRPM = std::stoi(value);
+      int desRPM = value.toInt();
       params->setDesiredRPM(desRPM);
     }
     else if (identifier == "deO2 ") {
-      double desO2 = std::stod(value);
+      double desO2 = value.toFloat();
       params->setDesiredO2(desO2);
     }
-    else if (identifier.substr(0,2) == "ar ") {
-      int index = std::stoi(identifier.substr(2,2));
-      double ratio = std::stod(value);
+    else if (identifier.substring(0,2) == "ar ") {
+      int index = identifier.substring(2,2).toInt();
+      double ratio = value.toFloat();
       params->setFuelTableValue(index, ratio);
     }
     else {

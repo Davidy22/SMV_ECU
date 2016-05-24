@@ -15,6 +15,7 @@ void Parameters::calcSensors() {
 
 double Parameters::calcMAP() {
   double map = (18.8636364*analogRead(MAP_Pin)*voltageConversion + 20)*1000;
+  //TODO: Figure out why this is triggering >=MAP_MAX
   if (map >= MAP_MAX || map <= 0) {
     //Serial.println("Bad value on MAP");
     return MAP;
